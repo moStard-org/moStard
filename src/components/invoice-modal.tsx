@@ -2,46 +2,36 @@ import { useState } from "react";
 import {
   Button,
   Flex,
-  IconButton,
   Input,
   Modal,
   ModalBody,
   ModalContent,
   ModalOverlay,
-  ModalProps,
+  type ModalProps,
   useDisclosure,
-  useToast,
 } from "@chakra-ui/react";
 
-import { ExternalLinkIcon, QrCodeIcon } from "./icons";
+import { ExternalLinkIcon } from "./icons";
 import QrCodeSvg from "./qr-code/qr-code-svg";
 import { CopyIconButton } from "./copy-icon-button";
+import { useBreakpointValue } from "../providers/global/breakpoint-provider";
 
-type CommonProps = { invoice: string; onPaid: () => void };
+type CommonProps = { address?: string; amount: number; onPaid: () => void };
 
-export function InvoiceModalContent({ invoice, onPaid }: CommonProps) {
-  const toast = useToast();
-  const showQr = useDisclosure();
-  const [payingWebLn, setPayingWebLn] = useState(false);
+export function InvoiceModalContent({ address, amount, onPaid }: CommonProps) {
+  const showQr = useDisclosure({ isOpen: true });
   const [payingApp, setPayingApp] = useState(false);
+  let uri = "";
+  // TODO: tx_payment_id
+  if (Number.isNaN("amount")) {
+    uri = `monero:${address?.replace(/\s/g, "")}`;
+  } else {
+    uri = `monero:${address?.replace(/\s/g, "")}?tx_amount=${amount}`;
+  }
 
-  const payWithWebLn = async (invoice: string) => {
-    try {
-      if (window.webln && invoice) {
-        setPayingWebLn(true);
-        if (!window.webln.enabled) await window.webln.enable();
-        await window.webln.sendPayment(invoice);
-
-        if (onPaid) onPaid();
-      }
-    } catch (e) {
-      if (e instanceof Error) toast({ description: e.message, status: "error" });
-    }
-    setPayingWebLn(false);
-  };
-  const payWithApp = async (invoice: string) => {
+  const payWithApp = async () => {
     setPayingApp(true);
-    window.open("lightning:" + invoice);
+    window.open(uri);
 
     const listener = () => {
       if (document.visibilityState === "visible") {
@@ -57,42 +47,26 @@ export function InvoiceModalContent({ invoice, onPaid }: CommonProps) {
 
   return (
     <Flex gap="2" direction="column">
-      {showQr.isOpen && <QrCodeSvg content={invoice} maxW="4in" mx="auto" aria-label="Payment QR code" />}
+      {showQr.isOpen && <QrCodeSvg content={uri} xmrIcon />}
       <Flex gap="2">
-        <Input value={invoice} userSelect="all" onChange={() => {}} aria-label="Lightning invoice" readOnly />
-        <IconButton
-          icon={<QrCodeIcon boxSize={6} />}
-          aria-label="Show QR code"
-          onClick={showQr.onToggle}
+        <Input value={uri} readOnly />
+        <CopyIconButton
+          value={uri}
+          aria-label="Copy Invoice"
           variant="solid"
           size="md"
-          aria-pressed={showQr.isOpen}
         />
-        <CopyIconButton value={invoice} aria-label="Copy invoice" variant="solid" size="md" />
       </Flex>
       <Flex gap="2">
-        {window.webln && (
-          <Button
-            onClick={() => payWithWebLn(invoice)}
-            flex={1}
-            variant="solid"
-            size="md"
-            isLoading={payingWebLn}
-            aria-label="Pay with WebLN"
-          >
-            Pay with WebLN
-          </Button>
-        )}
         <Button
           leftIcon={<ExternalLinkIcon />}
-          onClick={() => payWithApp(invoice)}
+          onClick={payWithApp}
           flex={1}
           variant="solid"
           size="md"
           isLoading={payingApp}
-          aria-label="Open in lightning app"
         >
-          Open App
+          Pay in Wallet
         </Button>
       </Flex>
     </Flex>
@@ -100,18 +74,21 @@ export function InvoiceModalContent({ invoice, onPaid }: CommonProps) {
 }
 
 export default function InvoiceModal({
-  invoice,
+  address,
+  amount,
   onClose,
   onPaid,
   ...props
 }: Omit<ModalProps, "children"> & CommonProps) {
+  const isMobile = useBreakpointValue({ base: true, md: false });
   return (
-    <Modal onClose={onClose} {...props}>
+    <Modal onClose={onClose} size={isMobile ? "full" : "xl"} {...props}>
       <ModalOverlay />
       <ModalContent>
-        <ModalBody padding="4" role="region" aria-label="Payment options">
+        <ModalBody padding="4">
           <InvoiceModalContent
-            invoice={invoice}
+            address={address}
+            amount={amount}
             onPaid={() => {
               if (onPaid) onPaid();
               onClose();

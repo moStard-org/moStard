@@ -1,4 +1,4 @@
-package ninja.nostrudel;
+package org.mostard;
 
 import android.os.Bundle;
 import android.webkit.WebSettings;

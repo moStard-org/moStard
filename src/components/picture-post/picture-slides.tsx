@@ -7,7 +7,6 @@ import styled from "@emotion/styled";
 import { TrustImage, TrustVideo } from "../content/links";
 import { isImageURL, isVideoURL } from "applesauce-core/helpers";
 import { ChevronLeftIcon, ChevronRightIcon } from "../icons";
-import ZapBubbles from "../note/timeline-note/components/zap-bubbles";
 
 function CustomArrows() {
   const { currentPage, totalPages, wrapMode, goBack, goForward } = useCarousel();
@@ -113,7 +112,6 @@ export default function PicturePostSlides({
         <Flex justifyContent="center" overflow="hidden" flexGrow={1} alignItems="flex-start">
           <PictureAttachmentSlide media={attachments[0]} />
         </Flex>
-        {showZaps && <ZapBubbles event={post} px="2" />}
       </Flex>
     );
 
@@ -126,7 +124,6 @@ export default function PicturePostSlides({
         showArrows
         dots={
           <Flex gap="2" justifyContent="space-between" alignItems="center" px="2">
-            {showZaps && <ZapBubbles event={post} />}
             <Spacer />
             <PageIndicators />
           </Flex>

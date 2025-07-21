@@ -6,5 +6,5 @@ export default function AppLayout() {
   const mobile = useBreakpointValue({ base: true, md: false });
 
   if (mobile) return <MobileLayout />;
-  else return <DesktopLayout />;
+  return <DesktopLayout />;
 }

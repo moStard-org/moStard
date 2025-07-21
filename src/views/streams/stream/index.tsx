@@ -18,10 +18,10 @@ import {
 } from "@chakra-ui/react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Global, css } from "@emotion/react";
-import { NostrEvent } from "nostr-tools";
+import type { NostrEvent } from "nostr-tools";
 
 import LiveVideoPlayer from "../../../components/live-video-player";
-import StreamChat, { ChatDisplayMode } from "./stream-chat";
+import StreamChat, { type ChatDisplayMode } from "./stream-chat";
 import UserAvatarLink from "../../../components/user/user-avatar-link";
 import UserLink from "../../../components/user/user-link";
 import StreamSummaryContent from "../components/stream-summary-content";
@@ -30,15 +30,11 @@ import useSetColorMode from "../../../hooks/use-set-color-mode";
 import { CopyIconButton } from "../../../components/copy-icon-button";
 import StreamerCards from "../components/streamer-cards";
 import { useAppTitle } from "../../../hooks/use-app-title";
-import StreamSatsPerMinute from "../components/stream-sats-per-minute";
 import { UserEmojiProvider } from "../../../providers/global/emoji-provider";
 import StreamStatusBadge from "../components/status-badge";
 import ChatMessageForm from "./stream-chat/stream-chat-form";
 import StreamChatLog from "./stream-chat/chat-log";
-import StreamTopZappers from "../components/stream-top-zappers";
 import StreamHashtags from "../components/stream-hashtags";
-import StreamZapButton from "../components/stream-zap-button";
-import StreamGoal from "../components/stream-goal";
 import VerticalPageLayout from "../../../components/vertical-page-layout";
 import { useBreakpointValue } from "../../../providers/global/breakpoint-provider";
 import { AdditionalRelayProvider } from "../../../providers/local/additional-relay";
@@ -81,7 +77,11 @@ function DesktopStreamPage({ stream }: { stream: NostrEvent }) {
             const h = 910;
             const y = window.screenTop + window.innerHeight - h;
             const x = window.screenLeft + window.innerWidth - w;
-            window.open(location.href + "?displayMode=popup", "_blank", `width=${w},height=${h},left=${x},top=${y}`);
+            window.open(
+              location.href + "?displayMode=popup",
+              "_blank",
+              `width=${w},height=${h},left=${x},top=${y}`,
+            );
           }}
         >
           Pop out
@@ -95,18 +95,32 @@ function DesktopStreamPage({ stream }: { stream: NostrEvent }) {
   const image = getStreamImage(stream);
   const videoStreams = getStreamStreamingURLs(stream).filter(isStreamURL);
   const recording = getStreamRecording(stream);
-  const videoRecording = recording && (isVideoURL(recording) || isStreamURL(recording)) ? recording : undefined;
+  const videoRecording =
+    recording && (isVideoURL(recording) || isStreamURL(recording))
+      ? recording
+      : undefined;
 
   useAppTitle(title);
 
   return (
     <VerticalPageLayout>
       <Flex gap="2" alignItems="center">
-        <Button onClick={() => navigate(-1)} leftIcon={<ChevronLeftIcon boxSize={6} />}>
+        <Button
+          onClick={() => navigate(-1)}
+          leftIcon={<ChevronLeftIcon boxSize={6} />}
+        >
           Back
         </Button>
-        <UserAvatarLink pubkey={host} size="sm" display={{ base: "none", md: "block" }} />
-        <Heading size="md" isTruncated display={{ base: "none", md: "initial" }}>
+        <UserAvatarLink
+          pubkey={host}
+          size="sm"
+          display={{ base: "none", md: "block" }}
+        />
+        <Heading
+          size="md"
+          isTruncated
+          display={{ base: "none", md: "initial" }}
+        >
           {title}
         </Heading>
         <StreamStatusBadge stream={stream} fontSize="lg" />
@@ -116,7 +130,9 @@ function DesktopStreamPage({ stream }: { stream: NostrEvent }) {
           <StreamOpenButton stream={stream} />
           <EventQuoteButton event={stream} title="Share stream" />
           <DebugEventButton event={stream} />
-          <Button onClick={() => setShowChat((v) => !v)}>{showChat ? "Hide" : "Show"} Chat</Button>
+          <Button onClick={() => setShowChat((v) => !v)}>
+            {showChat ? "Hide" : "Show"} Chat
+          </Button>
         </ButtonGroup>
       </Flex>
       <Flex gap="2" maxH="calc(100vh - 4rem)" overflow="hidden">
@@ -130,9 +146,18 @@ function DesktopStreamPage({ stream }: { stream: NostrEvent }) {
           mx="auto"
         />
         {showChat && (
-          <Flex direction="column" gap="2" flexGrow={1} maxW="lg" flexShrink={0}>
-            <StreamGoal stream={stream} />
-            <StreamChat stream={stream} actions={renderChatActions()} flex={1} />
+          <Flex
+            direction="column"
+            gap="2"
+            flexGrow={1}
+            maxW="lg"
+            flexShrink={0}
+          >
+            <StreamChat
+              stream={stream}
+              actions={renderChatActions()}
+              flex={1}
+            />
           </Flex>
         )}
       </Flex>
@@ -144,7 +169,6 @@ function DesktopStreamPage({ stream }: { stream: NostrEvent }) {
             <UserLink pubkey={host} />
           </Box>
           <Spacer />
-          {!!window.webln && <StreamSatsPerMinute pubkey={host} />}
         </Flex>
         <StreamSummaryContent stream={stream} />
         {stream.tags.length > 0 && (
@@ -170,7 +194,10 @@ function MobileStreamPage({ stream }: { stream: NostrEvent }) {
   const image = getStreamImage(stream);
   const videoStreams = getStreamStreamingURLs(stream).filter(isStreamURL);
   const recording = getStreamRecording(stream);
-  const videoRecording = recording && (isVideoURL(recording) || isStreamURL(recording)) ? recording : undefined;
+  const videoRecording =
+    recording && (isVideoURL(recording) || isStreamURL(recording))
+      ? recording
+      : undefined;
 
   useAppTitle(title);
 
@@ -178,7 +205,11 @@ function MobileStreamPage({ stream }: { stream: NostrEvent }) {
     <VerticalPageLayout px={0}>
       <ContentSettingsProvider blurMedia={false}>
         <Flex gap="2" alignItems="center" px="2" flexShrink={0}>
-          <Button onClick={() => navigate(-1)} leftIcon={<ChevronLeftIcon />} size="sm">
+          <Button
+            onClick={() => navigate(-1)}
+            leftIcon={<ChevronLeftIcon />}
+            size="sm"
+          >
             Back
           </Button>
           <ButtonGroup size="sm" ml="auto">
@@ -189,7 +220,11 @@ function MobileStreamPage({ stream }: { stream: NostrEvent }) {
             <Button onClick={showChat.onOpen}>Show Chat</Button>
           </ButtonGroup>
         </Flex>
-        <LiveVideoPlayer stream={videoStreams[0] || videoRecording} autoPlay={videoStreams.length > 0} poster={image} />
+        <LiveVideoPlayer
+          stream={videoStreams[0] || videoRecording}
+          autoPlay={videoStreams.length > 0}
+          poster={image}
+        />
         <Flex direction="column" gap="2" overflow="hidden" px="2">
           <Flex gap="2">
             <UserAvatarLink pubkey={host} noProxy />
@@ -204,22 +239,30 @@ function MobileStreamPage({ stream }: { stream: NostrEvent }) {
               <StreamHashtags stream={stream} />
             </Flex>
           )}
-          <StreamZapButton stream={stream} label="Zap Stream" />
           <Heading size="sm">Stream goal</Heading>
           <Divider />
-          <StreamGoal stream={stream} />
           <StreamerCards pubkey={host} />
         </Flex>
       </ContentSettingsProvider>
-      <Drawer onClose={showChat.onClose} isOpen={showChat.isOpen} size="full" isFullHeight>
+      <Drawer
+        onClose={showChat.onClose}
+        isOpen={showChat.isOpen}
+        size="full"
+        isFullHeight
+      >
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader px="4" pb="0">
             Stream Chat
           </DrawerHeader>
-          <DrawerBody p={0} overflow="hidden" display="flex" gap="2" flexDirection="column">
-            <StreamTopZappers stream={stream} px="2" />
+          <DrawerBody
+            p={0}
+            overflow="hidden"
+            display="flex"
+            gap="2"
+            flexDirection="column"
+          >
             <StreamChatLog stream={stream} flex={1} px="2" />
             <ChatMessageForm stream={stream} />
           </DrawerBody>
@@ -236,7 +279,13 @@ function StreamPage({ stream }: { stream: NostrEvent }) {
   return <Layout stream={stream} />;
 }
 
-function ChatWidget({ stream, displayMode }: { stream: NostrEvent; displayMode: ChatDisplayMode }) {
+function ChatWidget({
+  stream,
+  displayMode,
+}: {
+  stream: NostrEvent;
+  displayMode: ChatDisplayMode;
+}) {
   return (
     <>
       <Global
@@ -246,7 +295,13 @@ function ChatWidget({ stream, displayMode }: { stream: NostrEvent; displayMode: 
           }
         `}
       />
-      <StreamChat stream={stream} flexGrow={1} h="100vh" w="100vw" displayMode={displayMode} />
+      <StreamChat
+        stream={stream}
+        flexGrow={1}
+        h="100vh"
+        w="100vw"
+        displayMode={displayMode}
+      />
     </>
   );
 }
@@ -260,14 +315,19 @@ export default function StreamView() {
   const stream = useReplaceableEvent(pointer);
   const relays = stream ? getStreamRelays(stream) : undefined;
 
-  const displayMode = (params.get("displayMode") as ChatDisplayMode) ?? undefined;
+  const displayMode =
+    (params.get("displayMode") as ChatDisplayMode) ?? undefined;
 
   if (!stream) return <Spinner />;
   return (
     // add snort and damus relays so zap.stream will always see zaps
     <AdditionalRelayProvider relays={relays ?? []}>
       <UserEmojiProvider pubkey={getStreamHost(stream)}>
-        {displayMode ? <ChatWidget stream={stream} displayMode={displayMode} /> : <StreamPage stream={stream} />}
+        {displayMode ? (
+          <ChatWidget stream={stream} displayMode={displayMode} />
+        ) : (
+          <StreamPage stream={stream} />
+        )}
       </UserEmojiProvider>
     </AdditionalRelayProvider>
   );

@@ -1,20 +1,37 @@
-import { Box, BoxProps } from "@chakra-ui/react";
-import { NostrEvent } from "nostr-tools";
+import { Box, type BoxProps } from "@chakra-ui/react";
+import type { NostrEvent } from "nostr-tools";
 import { useRenderedContent } from "applesauce-react/hooks";
-import { emojis, nostrMentions, links, hashtags } from "applesauce-content/text";
+import {
+  emojis,
+  nostrMentions,
+  links,
+  hashtags,
+} from "applesauce-content/text";
 
 import { components } from "../content";
 import { renderGenericUrl } from "../content/links";
 import { nipDefinitions } from "../content/transform/nip-notation";
 import { bipDefinitions } from "../content/transform/bip-notation";
+import { moneroAddressLinks } from "../content/transform/monero-notation";
 
-const transformers = [links, nostrMentions, emojis, hashtags, nipDefinitions, bipDefinitions];
+const transformers = [
+  links,
+  nostrMentions,
+  emojis,
+  hashtags,
+  nipDefinitions,
+  bipDefinitions,
+  moneroAddressLinks,
+];
 
 const linkRenderers = [renderGenericUrl];
 
 const PicturePostContentSymbol = Symbol.for("picture-post-content");
 
-export default function PicturePostContents({ post, ...props }: { post: NostrEvent } & Omit<BoxProps, "children">) {
+export default function MediaPostContents({
+  post,
+  ...props
+}: { post: NostrEvent } & Omit<BoxProps, "children">) {
   const content = useRenderedContent(post, components, {
     linkRenderers,
     transformers,

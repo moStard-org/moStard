@@ -41,12 +41,12 @@ export default defineConfig({
         maximumFileSizeToCacheInBytes: 1024 * 1024 * 8,
       },
       manifest: {
-        name: "noStrudel",
-        short_name: "noStrudel",
+        name: "moStard",
+        short_name: "moStard",
         description: "A sandbox for exploring nostr",
         display: "standalone",
         orientation: "portrait-primary",
-        theme_color: "#8DB600",
+        theme_color: "#ff6600",
         categories: ["social"],
         icons: [
           { src: "/favicon.ico", type: "image/x-icon", sizes: "16x16 32x32" },

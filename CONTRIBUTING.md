@@ -10,7 +10,7 @@ Thank you for considering contributing to the project! I welcome contributions f
 - Checkout the `master` branch `git checkout master`
 - Create a new branch for your feature `git checkout -b new-feature`
 - Start making changes and fixing things
-- Open a pull request [here](https://github.com/hzrd149/nostrudel/pulls)
+- Open a pull request [here](https://github.com/mostard-org/mostard)
 - Wait for feedback. it might take me a while to look at it
 
 ## Guidelines
@@ -21,7 +21,7 @@ Thank you for considering contributing to the project! I welcome contributions f
 ## Issues and Bug Reports
 
 If you find a bug or have an idea for a new feature, please create an issue in our repository.
-Be sure to include a clear description of the problem or feature request, and what version you found the bug in. (either `nostrudel.ninja` or `next.nostrudel.ninja`)
+Be sure to include a clear description of the problem or feature request
 
 ## License
 

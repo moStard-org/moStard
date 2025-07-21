@@ -1,16 +1,14 @@
 <p align="center">
-  <img src="screenshots/icon.svg" alt="Project Logo" width="21%">
+  <img src="public/logo_bg.png" alt="Project Logo" width="21%">
 </p>
 
-# noStrudel
+# moStard
 
-> NOTE: This client is still in development and will have bugs
-
-noStrudel is a web app for exploring the [nostr](https://github.com/nostr-protocol) protocol.
+moStard is a web app for exploring the [nostr](https://github.com/nostr-protocol) protocol.
 
 The goal of this project is to build a nostr client that lets a user explore the nostr protocol by showing as much information as possible and letting the user view the underlying events.
 
-Live Instance: [nostrudel.ninja](https://nostrudel.ninja)
+Live Instance: [mostard.org](https://mostard.org)
 
 There are many features missing from this client and I wont get around to implementing everything. but if you like the client you are welcome to use it.
 
@@ -25,12 +23,12 @@ I would recommend you use a browser extension like [Alby](https://getalby.com/) 
 ## Running with docker
 
 ```bash
-docker run --rm -p 8080:80 ghcr.io/hzrd149/nostrudel:master
+docker run --rm -p 8080:80 ghcr.io/mostard-org/mostard:mostard
 ```
 
 ## Docker compose and other services
 
-noStrudels docker image has a few options for connecting to other services running locally
+moStard's docker image has a few options for connecting to other services running locally
 
 - `CACHE_RELAY`: if set the client will use the relay to cache all of its events instead of storing them in the browser cache
 - `IMAGE_PROXY`: can be set to a local [imageproxy](https://github.com/willnorris/imageproxy) instance so the app can resize profile images
@@ -42,7 +40,7 @@ You can find a full example of all these services in the [docker-compose.yaml](.
 ## Running locally
 
 ```bash
-git clone git@github.com:hzrd149/nostrudel.git
+git clone git@github.com:mostard-org/mostard.git
 cd nostrudel
 pnpm install
 pnpm run dev
@@ -51,3 +49,8 @@ pnpm run dev
 ## Contributing
 
 This is only a personal project, so if you open any PRs please keep them small. thanks
+
+## Support
+
+<img src="public/donate_qr.png" alt="Donate QR" width="21%"> <img src="public/monero_chan.webp" alt="Monero Chan" width="21%"> You can send some xmr!!! thx!!
+*85kUEzPzBopaXUJ5dL19J6deh5md6YZDZLUUpv63wXdCiRo3pPwrAJHAKAsSo4BgKQBpcs5hSth23hEFr5mmNxRxMeDY1Ng*

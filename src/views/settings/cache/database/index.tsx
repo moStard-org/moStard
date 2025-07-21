@@ -11,19 +11,19 @@ const WasmDatabasePage = lazy(() => import("./wasm"));
 const InternalDatabasePage = lazy(() => import("./internal"));
 
 export default function DatabaseView() {
-  const cacheRelay = useCacheRelay();
+	const cacheRelay = useCacheRelay();
 
-  let content = (
-    <Text>
-      noStrudel does not have access to the selected cache relays database{" "}
-      <Link as={RouterLink} to="/relays/cache" color="blue.500">
-        Change cache relay
-      </Link>
-    </Text>
-  );
+	let content = (
+		<Text>
+			moStard does not have access to the selected cache relays database{" "}
+			<Link as={RouterLink} to="/relays/cache" color="blue.500">
+				Change cache relay
+			</Link>
+		</Text>
+	);
 
-  if (cacheRelay instanceof WasmRelay) content = <WasmDatabasePage />;
-  else if (cacheRelay instanceof CacheRelay) content = <InternalDatabasePage />;
+	if (cacheRelay instanceof WasmRelay) content = <WasmDatabasePage />;
+	else if (cacheRelay instanceof CacheRelay) content = <InternalDatabasePage />;
 
-  return <SimpleView title="Event Cache">{content}</SimpleView>;
+	return <SimpleView title="Event Cache">{content}</SimpleView>;
 }

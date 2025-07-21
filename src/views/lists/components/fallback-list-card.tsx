@@ -36,7 +36,6 @@ import ListMenu from "./list-menu";
 import { NotesIcon } from "../../../components/icons";
 import User01 from "../../../components/icons/user-01";
 import HoverLinkOverlay from "../../../components/hover-link-overlay";
-import EventZapButton from "../../../components/zap/event-zap-button";
 import Link01 from "../../../components/icons/link-01";
 import File02 from "../../../components/icons/file-02";
 import SimpleLikeButton from "../../../components/event-reactions/simple-like-button";

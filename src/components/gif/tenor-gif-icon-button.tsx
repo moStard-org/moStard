@@ -1,6 +1,6 @@
 import {
   IconButton,
-  IconButtonProps,
+  type IconButtonProps,
   Modal,
   ModalContent,
   ModalOverlay,
@@ -12,7 +12,7 @@ import {
   useBoolean,
   useColorMode,
 } from "@chakra-ui/react";
-import GifPicker, { TenorImage, Theme } from "gif-picker-react";
+import GifPicker, { type TenorImage, Theme } from "gif-picker-react";
 
 import { useBreakpointValue } from "../../providers/global/breakpoint-provider";
 import Clapperboard from "../icons/clapperboard";
@@ -60,25 +60,30 @@ export default function TenorGifIconButton({
         </Modal>
       </>
     );
-  } else
-    return (
-      <Popover isLazy isOpen={isOpen} onOpen={open.on} onClose={open.off}>
-        <PopoverTrigger>
-          <IconButton icon={<Clapperboard boxSize={5} />} aria-label="Add Gif" title="Add Gif" {...props} />
-        </PopoverTrigger>
-        {portal ? (
-          <Portal>
-            <PopoverContent w="350px" border="none" rounded="xl">
-              <PopoverArrow />
-              {picker}
-            </PopoverContent>
-          </Portal>
-        ) : (
+  }
+  return (
+    <Popover isLazy isOpen={isOpen} onOpen={open.on} onClose={open.off}>
+      <PopoverTrigger>
+        <IconButton
+          icon={<Clapperboard boxSize={5} />}
+          aria-label="Add Gif"
+          title="Add Gif"
+          {...props}
+        />
+      </PopoverTrigger>
+      {portal ? (
+        <Portal>
           <PopoverContent w="350px" border="none" rounded="xl">
             <PopoverArrow />
             {picker}
           </PopoverContent>
-        )}
-      </Popover>
-    );
+        </Portal>
+      ) : (
+        <PopoverContent w="350px" border="none" rounded="xl">
+          <PopoverArrow />
+          {picker}
+        </PopoverContent>
+      )}
+    </Popover>
+  );
 }

@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "ninja.nostrudel"
+    namespace "org.mostard"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "ninja.nostrudel"
+        applicationId "org.mostard"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 2
