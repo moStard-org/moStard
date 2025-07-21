@@ -73,7 +73,8 @@ export default function ReactionPicker({
 	);
 
 	const handleSelect = (emoji: NativeEmoji) => {
-		if (emoji.src) onSelect?.({ shortcode: emoji.name, url: emoji.src });
+		if (emoji.src)
+			onSelect?.({ shortcode: emoji.name, url: emoji.src, id: emoji.id });
 		else if (emoji.id === "+1") onSelect?.("+");
 		else if (emoji.id === "-1") onSelect?.("-");
 		else if (emoji.native) onSelect?.(emoji.native);

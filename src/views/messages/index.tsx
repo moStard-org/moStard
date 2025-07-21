@@ -46,7 +46,7 @@ import {
 	legacyMessageSubscription,
 	wrappedMessageSubscription,
 } from "../../services/lifecycle";
-import localSettings from "../../services/local-settings";
+import localSettings from "../../services/preferences";
 import { DirectMessageRelays } from "../../models/messages";
 import ReadAuthRequiredAlert from "./components/read-auth-required-alert";
 

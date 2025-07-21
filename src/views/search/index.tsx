@@ -1,32 +1,33 @@
-import { useCallback, useEffect } from "react";
 import { ButtonGroup, Flex, IconButton, Input } from "@chakra-ui/react";
+import { useObservableEagerState } from "applesauce-react/hooks";
+import { useCallback, useEffect } from "react";
+import { useForm } from "react-hook-form";
 import {
+	Link as RouterLink,
 	useNavigate,
 	useSearchParams,
-	Link as RouterLink,
 } from "react-router-dom";
-import { useForm } from "react-hook-form";
 
-import { safeDecode } from "../../helpers/nip19";
-import { getMatchHashtag } from "../../helpers/regexp";
 import {
 	CopyToClipboardIcon,
 	SearchIcon,
 	SettingsIcon,
 } from "../../components/icons";
-import VerticalPageLayout from "../../components/vertical-page-layout";
-import PeopleListProvider from "../../providers/local/people-list-provider";
-import { useBreakpointValue } from "../../providers/global/breakpoint-provider";
 import QRCodeScannerButton from "../../components/qr-code/qr-code-scanner-button";
-import SearchResults from "./components/search-results";
+import VerticalPageLayout from "../../components/vertical-page-layout";
+import { safeDecode } from "../../helpers/nip19";
+import { getMatchHashtag } from "../../helpers/regexp";
 import useSearchRelays, {
 	useCacheRelaySupportsSearch,
 } from "../../hooks/use-search-relays";
-import useCacheRelay from "../../hooks/use-cache-relay";
+import { useBreakpointValue } from "../../providers/global/breakpoint-provider";
+import PeopleListProvider from "../../providers/local/people-list-provider";
+import { eventCache$ } from "../../services/event-cache";
 import SearchRelayPicker from "./components/search-relay-picker";
+import SearchResults from "./components/search-results";
 
 export function SearchPage() {
-	const cacheRelay = useCacheRelay();
+	const eventCache = useObservableEagerState(eventCache$);
 	const navigate = useNavigate();
 	const searchRelays = useSearchRelays();
 	const localSearchSupported = useCacheRelaySupportsSearch();
@@ -95,7 +96,8 @@ export function SearchPage() {
 	});
 
 	const shouldSearch =
-		!!searchQuery && (!!relay || (localSearchSupported && !!cacheRelay));
+		!!searchQuery &&
+		(!!relay || (localSearchSupported && !!eventCache?.search));
 
 	return (
 		<VerticalPageLayout>

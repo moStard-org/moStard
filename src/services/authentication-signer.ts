@@ -1,14 +1,13 @@
+import { unixNow } from "applesauce-core/helpers";
+import { createDefer, Deferred } from "applesauce-core/promise";
 import { Nip07Interface } from "applesauce-signers";
 import { EventTemplate, kinds, NostrEvent } from "nostr-tools";
-import { BehaviorSubject } from "rxjs";
-import { createDefer, Deferred } from "applesauce-core/promise";
-import { unixNow } from "applesauce-core/helpers";
 import * as Nostr from "nostr-typedef";
+import { BehaviorSubject } from "rxjs";
 
-import accounts from "./accounts";
 import { logger } from "../helpers/debug";
-import localSettings from "./local-settings";
-import { ConnectionState } from "./pool";
+import accounts from "./accounts";
+import localSettings from "./preferences";
 
 export type RelayAuthMode = "always" | "ask" | "never";
 

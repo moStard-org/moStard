@@ -53,7 +53,7 @@ import {
   usePublishEvent,
 } from "../../providers/global/publish-provider";
 import { ContentSettingsProvider } from "../../providers/local/content-settings";
-import localSettings from "../../services/local-settings";
+import localSettings from "../../services/preferences";
 import InsertImageButton from "../../views/new/note/insert-image-button";
 import { PublishLogEntryDetails } from "../../views/task-manager/publish-log/entry-details";
 import { ErrorBoundary } from "../error-boundary";

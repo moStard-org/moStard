@@ -7,14 +7,15 @@ import {
 	Text,
 } from "@chakra-ui/react";
 
-import useCacheRelay from "../../../../hooks/use-cache-relay";
-import localSettings from "../../../../services/local-settings";
+import { useObservableEagerState } from "applesauce-react/hooks";
+import { eventCache$ } from "../../../../services/event-cache";
+import localSettings from "../../../../services/preferences";
 
 export default function HostedRelayCard() {
-	const cacheRelay = useCacheRelay();
-	const enabled = cacheRelay?.url.includes(location.host + "/local-relay");
+	const eventCache = useObservableEagerState(eventCache$);
+	const enabled = eventCache?.type === "hosted-relay";
 	const enable = () => {
-		localSettings.cacheRelayURL.clear();
+		localSettings.eventCache.clear();
 	};
 
 	return (

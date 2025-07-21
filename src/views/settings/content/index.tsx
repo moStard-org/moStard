@@ -1,4 +1,5 @@
 import {
+	Box,
 	FormControl,
 	FormHelperText,
 	FormLabel,
@@ -15,7 +16,7 @@ import { useId, useMemo } from "react";
 
 import SimpleView from "../../../components/layout/presets/simple-view";
 import { useAppTitle } from "../../../hooks/use-app-title";
-import localSettings from "../../../services/local-settings";
+import localSettings from "../../../services/preferences";
 import { socialGraph$ } from "../../../services/social-graph";
 
 function SocialGraphSlider({
@@ -109,7 +110,18 @@ export default function ContentPoliciesSettings() {
 
 	return (
 		<SimpleView title="Content Policies" maxW="container.xl" gap="4">
-			<Heading size="md">Events</Heading>
+			<Box>
+				<Heading size="md">Events</Heading>
+				<Text fontStyle="italic" color="GrayText">
+					This setting will limit all content you see to your social graph. If
+					your social graph is small or you want to see a global view set this
+					to{" "}
+					<Text as="span" fontWeight="bold">
+						Everyone
+					</Text>
+					.
+				</Text>
+			</Box>
 
 			<SocialGraphSlider
 				label="Show events from"

@@ -24,7 +24,6 @@ import {
 	RECOMMENDED_JAPANESE_RELAYS,
 	RECOMMENDED_RELAYS,
 } from "../../../const";
-import { getRelaysFromExt } from "../../../helpers/nip07";
 import useUserContactRelays from "../../../hooks/use-user-contact-relays";
 import { useUserDNSIdentity } from "../../../hooks/use-user-dns-identity";
 import useUserMailboxes from "../../../hooks/use-user-mailboxes";
@@ -34,7 +33,7 @@ import {
 	removeAppRelay,
 	toggleAppRelay,
 } from "../../../services/app-relays";
-import localSettings from "../../../services/local-settings";
+import localSettings from "../../../services/preferences";
 import AddRelayForm from "./add-relay-form";
 import RelayControl from "./relay-control";
 
@@ -42,7 +41,11 @@ function RelaySetCard({
 	label,
 	read,
 	write,
-}: { label: string; read: Iterable<string>; write: Iterable<string> }) {
+}: {
+	label: string;
+	read: Iterable<string>;
+	write: Iterable<string>;
+}) {
 	const handleClick = useCallback<MouseEventHandler>((e) => {
 		e.preventDefault();
 		localSettings.readRelays.next(Array.from(read));
@@ -122,17 +125,6 @@ export default function AppRelaysView() {
 				Set from
 			</Heading>
 			<Flex wrap="wrap" gap="2">
-				{window.nostr && (
-					<Button
-						onClick={async () => {
-							const { read, write } = await getRelaysFromExt();
-							localSettings.readRelays.next(Array.from(read));
-							localSettings.writeRelays.next(Array.from(write));
-						}}
-					>
-						Extension
-					</Button>
-				)}
 				{mailboxes && (
 					<Button
 						onClick={() => {

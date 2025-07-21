@@ -23,7 +23,6 @@ import NotePublishedUsing from "../../../components/note/note-published-using";
 import EventShareButton from "../../../components/note/timeline-note/components/event-share-button";
 import NoteProxyLink from "../../../components/note/timeline-note/components/note-proxy-link";
 import NoteReactions from "../../../components/note/timeline-note/components/note-reactions";
-import NoteCommunityMetadata from "../../../components/note/timeline-note/note-community-metadata";
 import { TextNoteContents } from "../../../components/note/timeline-note/text-note-contents";
 import POWIcon from "../../../components/pow/pow-icon";
 import Timestamp from "../../../components/timestamp";
@@ -124,16 +123,13 @@ function ThreadPost({
 		return isMuted && !alwaysShow ? (
 			muteAlert
 		) : (
-			<>
-				<NoteCommunityMetadata event={post.event} pl="2" />
-				<ContentSettingsProvider
-					blurMedia={override}
-					hideEmbeds={override}
-					event={post.event}
-				>
-					<TextNoteContents event={post.event} pl="2" />
-				</ContentSettingsProvider>
-			</>
+			<ContentSettingsProvider
+				blurMedia={override}
+				hideEmbeds={override}
+				event={post.event}
+			>
+				<TextNoteContents event={post.event} pl="2" />
+			</ContentSettingsProvider>
 		);
 	};
 

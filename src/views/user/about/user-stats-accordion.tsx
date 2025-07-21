@@ -13,12 +13,10 @@ import {
 	StatNumber,
 	Text,
 } from "@chakra-ui/react";
-import { kinds } from "nostr-tools";
 import { useAsync } from "react-use";
 
 import Timestamp from "../../../components/timestamp";
 import { getPubkeysFromList } from "../../../helpers/nostr/lists";
-import useEventCount from "../../../hooks/use-event-count";
 import useUserContactList from "../../../hooks/use-user-contact-list";
 import { useAdditionalRelayContext } from "../../../providers/local/additional-relay";
 import trustedUserStatsService from "../../../services/trusted-user-stats";
@@ -31,10 +29,6 @@ export default function UserStatsAccordion({ pubkey }: { pubkey: string }) {
 		() => trustedUserStatsService.getUserStats(pubkey),
 		[pubkey],
 	);
-	const followerCount = useEventCount({
-		"#p": [pubkey],
-		kinds: [kinds.Contacts],
-	});
 
 	return (
 		<Accordion allowMultiple p="2">
@@ -65,7 +59,7 @@ export default function UserStatsAccordion({ pubkey }: { pubkey: string }) {
 							<>
 								<Stat>
 									<StatLabel>Followers</StatLabel>
-									<StatNumber>{followerCount || 0}</StatNumber>
+									<StatNumber>{stats.followers_pubkey_count || 0}</StatNumber>
 								</Stat>
 
 								<Stat>

@@ -94,18 +94,22 @@ type AppSettingsV14 = Omit<
 	version: 14;
 };
 
-export type AppSettings = AppSettingsV14;
+type AppSettingsV15 = Omit<AppSettingsV14, "version" | "hideUsernames"> & {
+	version: 15;
+	shareService?: string;
+};
+
+export type AppSettings = AppSettingsV15;
 
 export const DEFAULT_APP_SETTINGS: AppSettings = {
-	version: 14,
+	version: 15,
 
 	// display
 	theme: "default",
 	colorMode: "system",
-	primaryColor: "#8DB600",
+	primaryColor: "#ff6600",
 	maxPageWidth: "none",
 	showPubkeyColor: "avatar",
-	hideUsernames: false,
 	removeEmojisInUsernames: false,
 	showContentWarning: true,
 	loadOpenGraphData: true,
@@ -126,6 +130,7 @@ export const DEFAULT_APP_SETTINGS: AppSettings = {
 	// privacy
 	imageProxy: "",
 	corsProxy: "",
+	shareService: "https://njump.me/",
 	twitterRedirect: undefined,
 	redditRedirect: undefined,
 	youtubeRedirect: undefined,

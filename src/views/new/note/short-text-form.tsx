@@ -57,7 +57,7 @@ import {
 } from "../../../providers/global/publish-provider";
 import { ContentSettingsProvider } from "../../../providers/local/content-settings";
 import { eventStore } from "../../../services/event-store";
-import localSettings from "../../../services/local-settings";
+import localSettings from "../../../services/preferences";
 import { PublishLogEntryDetails } from "../../task-manager/publish-log/entry-details";
 import InsertImageButton from "./insert-image-button";
 

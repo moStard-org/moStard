@@ -12,7 +12,6 @@ import {
 	LinkBox,
 	useDisclosure,
 } from "@chakra-ui/react";
-import { useObservableEagerState } from "applesauce-react/hooks";
 import type { NostrEvent } from "nostr-tools";
 import { memo } from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -41,7 +40,6 @@ import EventShareButton from "./components/event-share-button";
 import NoteProxyLink from "./components/note-proxy-link";
 import NoteReactions from "./components/note-reactions";
 import ReplyContext from "./components/reply-context";
-import NoteCommunityMetadata from "./note-community-metadata";
 import NoteContentWithWarning from "./note-content-with-warning";
 
 export type TimelineNoteProps = Omit<CardProps, "children"> & {
@@ -55,8 +53,8 @@ export type TimelineNoteProps = Omit<CardProps, "children"> & {
 };
 export function TimelineNote({
 	event,
-	variant = "outline",
-	showReplyButton = true,
+	variant = "unstyled",
+	showReplyButton,
 	showReplyLine = true,
 	hideDrawerButton,
 	registerIntersectionEntity = true,
@@ -83,78 +81,84 @@ export function TimelineNote({
 	return (
 		<ContentSettingsProvider event={event}>
 			<ExpandProvider>
-				<Card
-					as={LinkBox}
-					variant={variant}
-					ref={registerIntersectionEntity ? ref : undefined}
-					data-event-id={event.id}
+				<Flex
+					direction="column"
+					borderWidth="0 2px 0 2px"
+					rounded="none"
+					borderColor="var(--chakra-colors-chakra-border-color)"
 					{...props}
 				>
-					{clickable && (
-						<HoverLinkOverlay
-							as={RouterLink}
-							to={`/n/${getSharableEventAddress(event)}`}
-						/>
-					)}
-					<CardHeader p="2">
-						<Flex flex="1" gap="2" alignItems="center">
-							<UserAvatarLink pubkey={event.pubkey} size="sm" />
-							<UserLink
-								pubkey={event.pubkey}
-								isTruncated
-								fontWeight="bold"
-								fontSize="lg"
-							/>
-							<Link
-								as={RouterLink}
-								whiteSpace="nowrap"
-								color="current"
-								to={`/n/${getSharableEventAddress(event)}`}
-							>
-								<Timestamp timestamp={event.created_at} />
-							</Link>
-							<POWIcon event={event} boxSize={5} />
-							<NotePublishedUsing event={event} />
-							<Flex grow={1} />
-						</Flex>
-						<NoteCommunityMetadata event={event} />
-						{showReplyLine && <ReplyContext event={event} />}
-					</CardHeader>
-					<CardBody as={ShowMoreContainer} px="2">
-						<NoteContentWithWarning event={event} />
-					</CardBody>
-					<CardFooter
-						padding="2"
-						display="flex"
-						gap="2"
-						flexDirection="column"
-						alignItems="flex-start"
+					<Card
+						as={LinkBox}
+						variant={variant}
+						ref={registerIntersectionEntity ? ref : undefined}
+						data-event-id={event.id}
 					>
-						{showReactionsOnNewLine && reactionButtons}
-						<Flex gap="2" w="full" alignItems="center">
-							<ButtonGroup size="sm" variant="ghost" zIndex={1}>
-								{showReplyButton && (
-									<IconButton
-										icon={<ReplyIcon />}
-										aria-label="Reply"
-										title="Reply"
-										onClick={replyForm.onToggle}
-									/>
-								)}
-								<EventShareButton event={event} />
-								<EventQuoteButton event={event} />
-								<EventTipButton event={event} />
-							</ButtonGroup>
-							{!showReactionsOnNewLine && reactionButtons}
-							<Box flexGrow={1} />
-							<ButtonGroup size="sm" variant="ghost" zIndex={1}>
-								<NoteProxyLink event={event} />
-								<BookmarkEventButton event={event} aria-label="Bookmark note" />
-								<NoteMenu event={event} aria-label="More Options" />
-							</ButtonGroup>
-						</Flex>
-					</CardFooter>
-				</Card>
+						{clickable && (
+							<HoverLinkOverlay
+								as={RouterLink}
+								to={`/n/${getSharableEventAddress(event)}`}
+							/>
+						)}
+						<CardHeader p="2">
+							<Flex flex="1" gap="2" alignItems="center">
+								<UserAvatarLink pubkey={event.pubkey} size="sm" />
+								<UserLink
+									pubkey={event.pubkey}
+									isTruncated
+									fontWeight="bold"
+									fontSize="lg"
+								/>
+								<Link
+									as={RouterLink}
+									whiteSpace="nowrap"
+									color="current"
+									to={`/n/${getSharableEventAddress(event)}`}
+								>
+									<Timestamp timestamp={event.created_at} />
+								</Link>
+								<POWIcon event={event} boxSize={5} />
+								<NotePublishedUsing event={event} />
+								<Flex grow={1} />
+							</Flex>
+							{showReplyLine && <ReplyContext event={event} />}
+						</CardHeader>
+						<CardBody as={ShowMoreContainer} px="2">
+							<NoteContentWithWarning event={event} />
+						</CardBody>
+						<CardFooter
+							p="2"
+							display="flex"
+							gap="2"
+							flexDirection="column"
+							alignItems="flex-start"
+						>
+							{showReactionsOnNewLine && reactionButtons}
+						</CardFooter>
+					</Card>
+					<Flex gap="2" w="full" alignItems="center" pt="2" px="2">
+						<ButtonGroup size="sm" variant="ghost" zIndex={1}>
+							{showReplyButton && (
+								<IconButton
+									icon={<ReplyIcon />}
+									aria-label="Reply"
+									title="Reply"
+									onClick={replyForm.onOpen}
+								/>
+							)}
+							<EventShareButton event={event} />
+							<EventQuoteButton event={event} />
+							<EventTipButton event={event} />
+						</ButtonGroup>
+						{!showReactionsOnNewLine && reactionButtons}
+						<Box flexGrow={1} />
+						<ButtonGroup size="sm" variant="ghost" zIndex={1}>
+							<NoteProxyLink event={event} />
+							<BookmarkEventButton event={event} aria-label="Bookmark note" />
+							<NoteMenu event={event} aria-label="More Options" />
+						</ButtonGroup>
+					</Flex>
+				</Flex>
 			</ExpandProvider>
 			{replyForm.isOpen && (
 				<ReplyForm
